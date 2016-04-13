@@ -1,4 +1,4 @@
-//c*
+/*
  * AD7705 test program for the Raspberry PI
  *
  * Copyright (c) 2007  MontaVista Software, Inc.
