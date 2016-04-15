@@ -9,6 +9,7 @@ public:
 	ADCreader() {running = 0;};
 	void quit();
 	void run();
+	void Retrievedata();
 private:
 	bool running;
 
