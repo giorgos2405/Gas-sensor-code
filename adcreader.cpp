@@ -12,7 +12,7 @@
  * Cross-compile with cross-gcc -I/path/to/cross-kernel/include
  */
 
-#include "adc.h"
+#include "adcreader.h"
 #include <QDebug>
 
 #include <stdint.h>
@@ -77,6 +77,7 @@ static uint8_t readReg(int fd)
 }
 
 static int readData(int fd)
+{
   ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
   if (ret < 1)
     pabort("can't send spi message");
