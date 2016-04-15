@@ -1,29 +1,3 @@
-
-Skip to content
-This repository
-
-    Pull requests
-    Issues
-    Gist
-
-    @giorgos2405
-
-1
-0
-
-    0
-
-katterek/MultiADC
-Code
-Issues 0
-Pull requests 0
-Wiki
-Pulse
-Graphs
-MultiADC/RTEP Project - Team 1/gpio-sysfs.cpp
-f14b14d on 7 Apr 2014
-Guest source code
-243 lines (195 sloc) 5.95 KB
 /* Copyright (c) 2011, RidgeRun
  * Copyright (c) 2014, Bernd Porr
  * All rights reserved.
@@ -266,8 +240,3 @@ int gpio_poll(int gpio_fd, int timeout)
 
   return rc;
 }
-
-    Status API Training Shop Blog About 
-
-    © 2016 GitHub, Inc. Terms Privacy Security Contact Help 
-
