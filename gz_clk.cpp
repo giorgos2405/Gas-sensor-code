@@ -23,21 +23,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdint.h>
-#include <bcm2835.h>
 
-// Address constants.
-const uint32_t CM_CTL = 0x0; // Control register offset.
-const uint32_t CM_DIV = 0x1; // Division register offset.
-const uint32_t CM_GP0 = 0x1C; // General Purpose Clock 0.
-const uint32_t CM_GP1 = 0x1E; // General Purpose Clock 1.
-const uint32_t CM_GP2 = 0x20; // General Purpose Clock 2.
-// Field constants.
-const uint32_t CM_PASSWD = 0xFF << 24; // Clock Manager password mask.
-const uint32_t CM_PASSWD_VAL = 0x5A << 24; // Clock Manager password.
-const uint32_t CM_CTL_BUSY = 1 << 7; // Clock busy flag.
-const uint32_t CM_CTL_ENAB = 1 << 4; // Clock enable flag.
-const uint32_t CM_CTL_SRC = 0xF; // Clock source mask.
+#define GZ_CLK_BUSY (1 << 7)
 
 int gz_clock_ena(int speed, int divisor) {
   int speed_id = 6;
@@ -63,19 +50,10 @@ int gz_clock_ena(int speed, int divisor) {
   }
   usleep(5);
   bcm2835_gpio_fsel(RPI_GPIO_P1_07, BCM2835_GPIO_FSEL_ALT0);
-
-  // Select target clock.
-  volatile uint32_t * clk_regs = bcm2835_clk + CM_GP0;
-  // To prevent "glitches" modifications must use the current register state.
-  uint32_t statectl = *(clk_regs + CM_CTL);
-  statectl = (statectl & (~CM_PASSWD)) | CM_PASSWD_VAL;
-  statectl&= ~CM_CTL_ENAB;
-  // Shut down clock, wait until not busy to prevent "glitches".
-  *(clk_regs + CM_CTL) = statectl;
-  while (*(clk_regs + CM_CTL) & CM_CTL_BUSY) {}
-  // Update the divisor register and start the clock with new settings.
-  *(clk_regs + CM_DIV) = 0x5A002000 | (divisor << 12);
-  *(clk_regs + CM_CTL) = 0x5A000010 | (speed_id & CM_CTL_SRC);
+  *(bcm2835_clk + 0x1C) = 0x5A000000 | speed_id;    // GPCLK0 off
+  while (*(bcm2835_clk + 0x1C) & GZ_CLK_BUSY) {}    // Wait for BUSY low
+  *(bcm2835_clk + 0x1D) = 0x5A002000 | (divisor << 12); // set DIVI
+  *(bcm2835_clk + 0x1C) = 0x5A000010 | speed_id;    // GPCLK0 on
   return 0;
   
 }
