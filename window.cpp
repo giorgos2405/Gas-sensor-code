@@ -1,5 +1,5 @@
 #include "window.h"
-// #include "adcreader.h"
+#include "adcreader.h"
 
 #include <cmath>  // for sine stuff
 
@@ -61,10 +61,10 @@ Window::Window() : gain(5), count(0)
 
 Window::~Window() {
 	// tells the thread to no longer run its endless loop
-//	adcreader->quit();
+	adcreader->quit();
 	// wait until the run method has terminated
-//	adcreader->wait();
-//	delete adcreader;
+	adcreader->wait();
+	delete adcreader;
 }
 
 void Window::timerEvent( QTimerEvent * )
