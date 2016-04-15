@@ -269,5 +269,5 @@ void ADCreader::run()
         close(fd);
         gpio_fd_close(sysfs_fd);
 
-        return ret;
+
 }
