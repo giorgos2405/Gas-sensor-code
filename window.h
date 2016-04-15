@@ -24,7 +24,7 @@ public:
 	void timerEvent( QTimerEvent * );
 
 public slots:
-	void setGas(double gain);
+	void setGas(int gas);
 
 // internal variables for the window class
 private:
