@@ -292,12 +292,12 @@ float ADCreader::Retrievedata(){
 		samples = bindex + 19999999-display;
 	}
 	else {
-		samples = bindex - display
+		samples = bindex - display;
 	}
-	float print
+	float print;
 	
 	for(i=0; i<samples; i++){
-		print = buffer[i+bindex];
+		print = buffer[i+display];
 		return print;
 	}
 	
