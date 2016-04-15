@@ -12,6 +12,9 @@
  * Cross-compile with cross-gcc -I/path/to/cross-kernel/include
  */
 
+#include "adc.h"
+#include <QDebug>
+
 #include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -121,7 +124,7 @@ static int readData(int fd)
 }
 
 
-int main(int argc, char *argv[])
+void ADCreader::run()
 {
         int ret = 0;
         int fd;
@@ -240,9 +243,9 @@ int main(int argc, char *argv[])
 
 
 
+        running = 1;
 
-
-        while (1) {
+        while (running) {
 
           // let's wait for data for max one second
           ret = gpio_poll(sysfs_fd,1000);
@@ -267,7 +270,6 @@ int main(int argc, char *argv[])
 
 
 
-//      fprintf(stderr,"data = %f      \r ", value);
 
         }
 
@@ -275,49 +277,4 @@ int main(int argc, char *argv[])
         gpio_fd_close(sysfs_fd);
 
         return ret;
-}
-
-
-
-
-
-          float Aincurrent  = vdifcurrent + 0.964;
-
-          float Rcurrent = (4300*5/Aincurrent)-4300;
-          float Rratio = Rcurrent/Rair;
-
-
-          fprintf(stderr,"data = %f \t vdiff=%f  \t Ain=%f  \t res ratio = %f  \r ", value, vdifcurrent, Aincurrent, Rratio);
-
-
-
-//      fprintf(stderr,"data = %f      \r ", value);
-
-        }
-
-        close(fd);
-        gpio_fd_close(sysfs_fd);
-
-        return ret;
-}
-
-
-
-
-#include "adcreader.h"
-#include <QDebug>
-
-void ADCreader::run()
-{
-        running = true;
-        while (running) {
-                qDebug() << "Tick";
-                sleep(1);
-        }
-}
-
-void ADCreader::quit()
-{
-        running = false;
-        exit(0);
 }
