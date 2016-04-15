@@ -55,8 +55,8 @@ Window::Window() : gain(5), count(0)
 	// At the moment it doesn't do anything else than
 	// running in an endless loop and which prints out "tick"
 	// every second.
-//	adcreader = new ADCreader();
-//	adcreader->start();
+	adcreader = new ADCreader();
+	adcreader->start();
 }
 
 Window::~Window() {
