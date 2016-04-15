@@ -28,6 +28,11 @@
 #include "gpio-sysfs.h"
 
 
+float buffer[20000000];
+int bindex = 1;
+int display = 0;
+int samples;
+
 static void pabort(const char *s)
 {
         perror(s);
@@ -235,7 +240,6 @@ void ADCreader::run()
 
 
 
-
         running = 1;
 
         while (running) {
@@ -258,9 +262,19 @@ void ADCreader::run()
           float Rcurrent = (4300*5/Aincurrent)-4300;
           float Rratio = Rcurrent/Rair;
 
-
-          fprintf(stderr,"data = %f \t vdiff=%f  \t Ain=%f  \t res ratio = %f  \r ", value, vdifcurrent, Aincurrent, Rratio);
-
+	  buffer[bindex-1] = Rratio;
+	  
+	  float test = buffer[bindex-1]
+	  
+	  fprintf(stderr,"data = %f \t vdiff=%f  \t Ain=%f  \t res ratio = %f  \r ", value, vdifcurrent, Aincurrent, test);
+	  
+	  bindex = bindex++;
+	  
+	  if(bindex == 20000000){
+	  	bindex = 0;
+	  }
+	  
+	  
 
 
 
@@ -270,6 +284,21 @@ void ADCreader::run()
         gpio_fd_close(sysfs_fd);
 
 
+}
+
+void ADCreader::Retrievedata(){
+	if (display>=bindex){
+		samples = bindex + 19999999-display;
+	}
+	else if{
+		samples = bindex - display
+	}
+	float print[samples]
+	for (int i=0; i<samples; i++){
+		print[i] = buffer[i+bindex]; 
+	}
+	
+	display = bindex;
 }
 
 void ADCreader::quit()
