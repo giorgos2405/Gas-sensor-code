@@ -7,9 +7,8 @@
 #include <qwt/qwt_plot_curve.h>
 
 #include <QBoxLayout>
-#include <QCheckBox>
 
-#include "adcreader.h"
+// #include "adcreader.h"
 
 // class definition 'Window'
 class Window : public QWidget
@@ -23,57 +22,31 @@ public:
 	~Window();
 
 	void timerEvent( QTimerEvent * );
-	void resizePlots(  );
-	void resamplePlots(  );
 
 public slots:
-	void setFilterSelection(double filter);
 	void setGain(double gain);
-	void setLength(double length);
-	void dftMode(int state);
-	void singleCMode(int state);
 
 // internal variables for the window class
 private:
-	QwtKnob      *knob_fs;
-	QwtKnob      *knob_gain;
-	QwtKnob      *knob_length;
-	QCheckBox    *button_dft;
-	QCheckBox    *button_1c;
+	QwtKnob      *knob;
+	QwtThermo    *thermo;
 	QwtPlot      *plot;
-	QwtPlot      *plot2;
 	QwtPlotCurve *curve;
-	QwtPlotCurve *curve2;
 
 	// layout elements from Qt itself http://qt-project.org/doc/qt-4.8/classes.html
 	QVBoxLayout  *vLayout;  // vertical layout
-	QVBoxLayout  *vLayout2;  // vertical layout2
 	QHBoxLayout  *hLayout;  // horizontal layout
 
-	uint8_t setting_fs;
-	uint8_t setting_gain;
-	double setting_length; // The length of the plot in seconds.
-	bool setting_1c;
-	bool plotResize;       // Orders the update thread to resize plot.
-	bool plotResample;       // Orders the update thread to resize plot.
-	double plotFreq;
-	volatile bool plotBusy; // The plot is in the process of bing manipulated. 
-	uint32_t plotDataSize; // The number of samples.
+	static const int plotDataSize = 100;
 
 	// data arrays for the plot
-	double* xData;
-	double* yData;
-	double* yData2;
+	double xData[plotDataSize];
+	double yData[plotDataSize];
 
-	// Data arrays for DFT view.
-	double* dft_f;
-	double* dft_c1;
-	double* dft_c2;
-	bool dft_on;
-
+	double gain;
 	int count;
 
-	ADCreader *adcreader;
+//	ADCreader *adcreader;
 };
 
 #endif // WINDOW_H
