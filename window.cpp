@@ -25,7 +25,7 @@ Window::Window() : gas(1), count(0)
 	for( int index=0; index<plotDataSize; ++index )
 	{
 		xData[index] = index;
-		yData[index] = 0 );
+		yData[index] = 0;
 	}
 
 	curve = new QwtPlotCurve;
