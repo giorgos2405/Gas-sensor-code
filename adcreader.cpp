@@ -286,7 +286,7 @@ void ADCreader::run()
 
 }
 
-float ADCreader::Retrievedata(){
+float ADCreader::Retrievedata(double* buffer, uint32_t size){
 	if (display>=bindex){
 		samples = bindex + 19999999-display;
 	}
