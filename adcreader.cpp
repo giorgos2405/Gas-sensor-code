@@ -264,7 +264,7 @@ void ADCreader::run()
 
 	  buffer[bindex-1] = Rratio;
 	  
-	  float test = buffer[bindex-1]
+	  float test = buffer[bindex-1];
 	  
 	  fprintf(stderr,"data = %f \t vdiff=%f  \t Ain=%f  \t res ratio = %f  \r ", value, vdifcurrent, Aincurrent, test);
 	  
@@ -286,15 +286,17 @@ void ADCreader::run()
 
 }
 
-float ADCreader::Retrievedata(double* buffer, uint32_t size){
-	if (display>=bindex){
+float ADCreader::Retrievedata(){
+	int i;
+	if(display>=bindex){
 		samples = bindex + 19999999-display;
 	}
-	else if{
+	else {
 		samples = bindex - display
 	}
 	float print
-	for (int i=0; i<samples; i++){
+	
+	for(i=0; i<samples; i++){
 		print = buffer[i+bindex];
 		return print;
 	}
