@@ -69,7 +69,7 @@ Window::~Window() {
 
 void Window::timerEvent( QTimerEvent * )
 {
-	double inVal = gain * sin( M_PI * count/50.0 );
+	double inVal = adcreader->Retrievedata();
 	++count;
 
 	// add the new input to the plot
