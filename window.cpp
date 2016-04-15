@@ -4,20 +4,20 @@
 #include <cmath>  // for sine stuff
 
 
-Window::Window() : gain(5), count(0)
+Window::Window() : gas(1), count(0)
 {
 	knob = new QwtKnob;
 	// set up the gain knob
-	knob->setValue(gain);
+	knob->setValue(gas);
 
 	// use the Qt signals/slots framework to update the gain -
 	// every time the knob is moved, the setGain function will be called
-	connect( knob, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
+	connect( knob, SIGNAL(valueChanged(double)), SLOT(setGas(int)) );
 
 	// set up the thermometer
 	thermo = new QwtThermo; 
 	thermo->setFillBrush( QBrush(Qt::red) );
-	thermo->setRange(0, 20);
+	thermo->setRange(0.1, 1.1);
 	thermo->show();
 
 
@@ -25,7 +25,7 @@ Window::Window() : gain(5), count(0)
 	for( int index=0; index<plotDataSize; ++index )
 	{
 		xData[index] = index;
-		yData[index] = gain * sin( M_PI * index/50 );
+		yData[index] = 0 );
 	}
 
 	curve = new QwtPlotCurve;
@@ -79,13 +79,15 @@ void Window::timerEvent( QTimerEvent * )
 	plot->replot();
 
 	// set the thermometer value
-	thermo->setValue( inVal + 10 );
+	thermo->setValue( inVal );
+	
+	
 }
 
 
 // this function can be used to change the gain of the A/D internal amplifier
-void Window::setGain(double gain)
+void Window::setGas(int gas)
 {
 	// for example purposes just change the amplitude of the generated input
-	this->gain = gain;
+	this->gas = gas;
 }
