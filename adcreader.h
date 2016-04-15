@@ -9,7 +9,7 @@ public:
 	ADCreader() {running = 0;};
 	void quit();
 	void run();
-	void Retrievedata();
+	float Retrievedata();
 private:
 	bool running;
 
