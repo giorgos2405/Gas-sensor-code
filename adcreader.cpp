@@ -271,3 +271,9 @@ void ADCreader::run()
 
 
 }
+
+void ADCreader::quit()
+{
+	running = false;
+	//exit(0);
+}
