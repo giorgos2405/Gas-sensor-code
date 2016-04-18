@@ -5,16 +5,9 @@
 
 int samplestodisplay;
 
-Window::Window() : gas(1), count(0)
+Window::Window() : count(0)
 {
-	knob = new QwtKnob;
-	// set up the gain knob
-	knob->setValue(gas);
-
-	// use the Qt signals/slots framework to update the gain -
-	// every time the knob is moved, the setGain function will be called
-	connect( knob, SIGNAL(valueChanged(double)), SLOT(setGas(int)) );
-
+	
 	// set up the thermometer
 	thermo = new QwtThermo; 
 	thermo->setFillBrush( QBrush(Qt::red) );
@@ -41,7 +34,6 @@ Window::Window() : gas(1), count(0)
 
 	// set up the layout - knob above thermometer
 	vLayout = new QVBoxLayout;
-	vLayout->addWidget(knob);
 	vLayout->addWidget(thermo);
 
 	// plot to the left of knob and thermometer
@@ -70,9 +62,11 @@ Window::~Window() {
 
 void Window::timerEvent( QTimerEvent * )
 {
+	//find how many samples there are to display
 	int samplestodisplay = adcreader->NumberofSamples();
 	int i;
 	
+	//display samples
 	for(i=0; i<samplestodisplay; i++){
 		double inVal = adcreader->getSample();
 		++count;
