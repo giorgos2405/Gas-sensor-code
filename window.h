@@ -24,11 +24,9 @@ public:
 	void timerEvent( QTimerEvent * );
 
 public slots:
-	void setGas(int gas);
-
+	
 // internal variables for the window class
 private:
-	QwtKnob      *knob;
 	QwtThermo    *thermo;
 	QwtPlot      *plot;
 	QwtPlotCurve *curve;
@@ -43,7 +41,6 @@ private:
 	double xData[plotDataSize];
 	double yData[plotDataSize];
 
-	int gas;
 	int count;
 
 	ADCreader *adcreader;
