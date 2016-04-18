@@ -9,7 +9,8 @@ public:
 	ADCreader() {running = 0;};
 	void quit();
 	void run();
-	float Retrievedata();
+	int NumberofSamples();
+	float getSample();
 private:
 	bool running;
 
