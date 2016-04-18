@@ -85,7 +85,7 @@ void Window::timerEvent( QTimerEvent * )
 
 		// set the thermometer value
 		thermo->setValue( inVal );
-	
+	}
 	
 }
 
