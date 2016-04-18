@@ -3,6 +3,7 @@
 
 #include <cmath>  // for sine stuff
 
+int samplestodisplay;
 
 Window::Window() : gas(1), count(0)
 {
@@ -69,17 +70,21 @@ Window::~Window() {
 
 void Window::timerEvent( QTimerEvent * )
 {
-	double inVal = adcreader->Retrievedata();
-	++count;
+	int samplestodisplay = adcreader->NumberofSamples();
+	int i;
+	
+	for(i=0; i<samplestodisplay; i++){
+		double inVal = adcreader->getSample();
+		++count;
 
-	// add the new input to the plot
-	memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
-	yData[plotDataSize-1] = inVal;
-	curve->setSamples(xData, yData, plotDataSize);
-	plot->replot();
+		// add the new input to the plot
+		memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
+		yData[plotDataSize-1] = inVal;
+		curve->setSamples(xData, yData, plotDataSize);
+		plot->replot();
 
-	// set the thermometer value
-	thermo->setValue( inVal );
+		// set the thermometer value
+		thermo->setValue( inVal );
 	
 	
 }
