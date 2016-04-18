@@ -230,13 +230,15 @@ void ADCreader::run()
           // tell the AD7705 to read the data register (16 bits)
           writeReg(fd,0x38);
           // read the data register by performing two 8 bit reads
+          
+          //acquire and store the value of resistance (presumably at clean air)
           float init  = readData(fd);
 
-          float vdif = ((init/32768)-1)*2.5;
+          float vdif = ((init/32768)-1)*2.5; //translate the code into voltage to find Ain1(+)-Ain1(-)
 
-          float Ain = vdif + 0.964;
+          float Ain = vdif + 0.964; //add Ain1(-) to find the actual voltage 
 
-          float Rair = (4300*5/Ain)-4300;
+          float Rair = (4300*5/Ain)-4300; // reverse engineer the voltage divider to find the resistance
           fprintf(stderr,"init = %f \t vdif= %f \t Ain=%f \t Rair = %f \n \n    ", init, vdif, Ain, Rair);
 
 
@@ -261,15 +263,18 @@ void ADCreader::run()
           float Aincurrent  = vdifcurrent + 0.964;
 
           float Rcurrent = (4300*5/Aincurrent)-4300;
-          float Rratio = Rcurrent/Rair;
+          float Rratio = Rcurrent/Rair; //divide resistance found by resistance in fresh air
 
-	  buffer[bindex-1] = Rratio;
+	  buffer[bindex-1] = Rratio; //store value in ring buffer
+	  
+	  /* The following code has been used for debugging purgposes and is now commented out
 	  
 	  float test = buffer[bindex-1];
 	  
 	  fprintf(stderr,"data = %f \t vdiff=%f  \t Ain=%f  \t res ratio = %f  \r ", value, vdifcurrent, Aincurrent, test);
+	  */
 	  
-	  bindex = bindex++;
+	  bindex = bindex++; // update buffer index
 	  
 	  if(bindex == 20000000){
 	  	bindex = 0;
@@ -287,6 +292,8 @@ void ADCreader::run()
 
 }
 
+
+// function used to find how many samples have been stored in the buffer since the last data printing
 int ADCreader::NumberofSamples(){
 
 	if(display>=bindex){
@@ -300,7 +307,7 @@ int ADCreader::NumberofSamples(){
 }
 
 
-
+// function used to acquire samples from the ring buffer
 float ADCreader::getSample(){
 	
 	print = buffer[display];
