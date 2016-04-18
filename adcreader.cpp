@@ -286,22 +286,29 @@ void ADCreader::run()
 
 }
 
-float ADCreader::Retrievedata(){
-	int i;
+int ADCreader::NumberofSamples(){
+
 	if(display>=bindex){
 		samples = bindex + 19999999-display;
 	}
 	else {
 		samples = bindex - display;
 	}
-	float print;
 	
-	for(i=0; i<samples; i++){
-		print = buffer[i+display];
-		return print;
+	return samples;
+}
+
+
+
+float ADCreader::getSample(){
+	
+	print = buffer[display];
+	display = display++;
+	if (display == 19999999){
+		display = 0;
 	}
-	
-	display = bindex;
+	return print;		
+		
 }
 
 void ADCreader::quit()
