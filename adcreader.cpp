@@ -32,6 +32,7 @@ float buffer[20000000];
 int bindex = 1;
 int display = 0;
 int samples;
+float print;
 
 static void pabort(const char *s)
 {
